@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Text;
@@ -9,6 +10,9 @@ namespace Receiver
     {
         public static void Main()
         {
+            //Receive receive = new Receive();
+            //receive.Startup();
+
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
@@ -28,6 +32,17 @@ namespace Receiver
                 Console.WriteLine(" Press [enter] to exit.");
                 Console.ReadLine();
             }
+        }
+
+        public string Startup() //Utiliar la interfaz IHostingEnvironment pasada como parámetro E.j. public string Startup(IHostingEnvironment)
+        {
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath($"C:\\Users\\JCHACON\\Source\\Repos\\RabbitMQ_POC\\Receiver"); //"des-hardcodear"
+            builder.AddJsonFile("appsettings.json", false, true);
+            var configuration = builder.Build();
+
+            // return configuration["SiteSettings:reqStr"];
+            return null;
         }
     }
 }

@@ -9,3 +9,5 @@ C:\Users\JCHACON\source\repos\RabbitMQ_POC\Sender\obj\Debug\netcoreapp2.0\Sender
 C:\Users\JCHACON\source\repos\RabbitMQ_POC\Sender\bin\Debug\netcoreapp2.0\Sender.pdb
 C:\Users\JCHACON\source\repos\RabbitMQ_POC\Sender\obj\Debug\netcoreapp2.0\Sender.dll
 C:\Users\JCHACON\source\repos\RabbitMQ_POC\Sender\obj\Debug\netcoreapp2.0\Sender.pdb
+C:\Users\JCHACON\Source\Repos\RabbitMQ_POC\Sender\bin\Debug\netcoreapp2.0\Sender.dll.config
+C:\Users\JCHACON\Source\Repos\RabbitMQ_POC\Sender\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.Configuration.dll

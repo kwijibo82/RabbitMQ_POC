@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
 using System;
 using System.Text;
 
@@ -24,6 +25,16 @@ namespace Sender
 
             Console.WriteLine(" Press [enter] to exit.");
             Console.ReadLine();
+        }
+
+        public static string Startup() //Utiliar la interfaz IHostingEnvironment pasada como parámetro E.j. public string Startup(IHostingEnvironment)
+        {
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath($"C:\\Users\\JCHACON\\Source\\Repos\\RabbitMQ_POC\\Sender"); //"des-hardcodear"
+            builder.AddJsonFile("appsettings.json", false, true);
+            var configuration = builder.Build();
+
+            return configuration["SiteSettings:reqStr"];
         }
     }
 }
