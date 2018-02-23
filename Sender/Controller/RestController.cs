@@ -1,13 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Sender.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
+using static Sender.Model.User;
 
 namespace Sender.Controller 
 {
-    class RestAPI
+    public class RestAPI
     {
        private readonly RestClient _client;
 
@@ -20,25 +22,25 @@ namespace Sender.Controller
        {
             return null;
        }
-        //TODO: Continue here tomorrow, add JsonNewtonSoft and deserilize received data inside the Get() method.
-        private string Get()
-        {
-            IRestRequest request = requestBuilder(); //<-- Solve this
-            var response = _client.Execute(RequestBuilder.CreateRequestState());
 
-        }
+       //TODO: Deserilize received data inside the Get() method.
+       public List<RootObject> Get() 
+       {
+           var response = _client.Execute(RequestBuilder.CreateRequestState());
+           var data = JsonConvert.DeserializeObject<List<RootObject>>(response);
+           return data;
+       }
+
     }
 
     public class RequestBuilder
     {
-        public static IRestRequest CreateRequestState()
+        public static HttpWebRequest CreateRequestState()
         {
             IRestRequest request = new RestRequest();
             //request.AddHeader("Postman-Token", "855916d5-0354-b992-a9cb-9eae4d4aaa5e"); //This example shows how to set a bearer
-            request.AddHeader("Cache-Control", "no cache");  
-            request.CreateWebRequest(Send.Startup());
-
-            return request; 
+            //request.AddHeader("Cache-Control", "no cache");  
+            return request.CreateWebRequest(Send.Startup());
         }
     }
 }

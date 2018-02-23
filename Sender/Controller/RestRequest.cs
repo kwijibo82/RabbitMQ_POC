@@ -16,6 +16,8 @@ namespace Sender.Controller
         public HttpWebRequest CreateWebRequest(string reqStr)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(reqStr);
+            req.ContentType = "application/json";
+
             return req;
         }
     }

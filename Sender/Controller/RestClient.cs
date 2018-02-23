@@ -25,9 +25,15 @@ namespace Sender.Controller
             return response;
         }
 
-        internal object Execute(IRestRequest restRequest)
+        internal string Execute(HttpWebRequest restRequest)
         {
-            throw new NotImplementedException();
+            string receivedData;
+            var res = (HttpWebResponse)restRequest.GetResponse();
+            using (var sr = new StreamReader(res.GetResponseStream()))
+            {
+                receivedData = sr.ReadToEnd();
+            }
+            return receivedData;
         }
     }
 }
