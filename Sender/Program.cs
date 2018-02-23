@@ -11,6 +11,7 @@ namespace Sender
     {
         public static void Main()
         {          
+            //SOme changes added
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
