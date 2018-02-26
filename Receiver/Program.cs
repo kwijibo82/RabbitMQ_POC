@@ -1,8 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Receiver.Model;
+using Receiver.Service;
 using System;
+using System.Collections.Generic;
 using System.Text;
+using static Receiver.Model.User;
 
 namespace Receiver
 {
@@ -10,39 +15,38 @@ namespace Receiver
     {
         public static void Main()
         {
-            //Receive receive = new Receive();
-            //receive.Startup();
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("RECEIVER");
+            Console.ResetColor();
 
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
+            CommonService commonService = new CommonService();
+            IConnection connection = commonService.GetRabbitMqConnection();
+            IModel model = connection.CreateModel();
+            ReceiveSerialisationMessages(model);
+        }
+
+        private static void ReceiveSerialisationMessages(IModel model)
+        {
+            model.BasicQos(0, 1, false);
+            QueueingBasicConsumer consumer = new QueueingBasicConsumer(model);
+            model.BasicConsume(CommonService.SerialisationQueueName, false, consumer);
+            while (true)
             {
-                channel.QueueDeclare(queue: "hello", durable: false, exclusive: false, autoDelete: false, arguments: null);
-
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
-                {
-                    var body = ea.Body;
-                    var message = Encoding.UTF8.GetString(body);
-                    Console.WriteLine(" [x] Received {0}", message);
-                    Console.ReadLine();
-                };
-                channel.BasicConsume(queue: "hello", autoAck: true, consumer: consumer);
-
-                Console.WriteLine(" Press [enter] to exit.");
-                Console.ReadLine();
+                BasicDeliverEventArgs deliveryArguments = consumer.Queue.Dequeue() as BasicDeliverEventArgs;
+                String jsonified = Encoding.UTF8.GetString(deliveryArguments.Body);
+                User u = JsonConvert.DeserializeObject<User>(jsonified);
+                Console.WriteLine(jsonified);
+                model.BasicAck(deliveryArguments.DeliveryTag, false);
             }
         }
 
-        public string Startup() //Utiliar la interfaz IHostingEnvironment pasada como parámetro E.j. public string Startup(IHostingEnvironment)
+        public void Startup() //Utiliar la interfaz IHostingEnvironment pasada como parámetro E.j. public string Startup(IHostingEnvironment)
         {
             var builder = new ConfigurationBuilder();
             builder.SetBasePath($"C:\\Users\\JCHACON\\Source\\Repos\\RabbitMQ_POC\\Receiver"); //"des-hardcodear"
             builder.AddJsonFile("appsettings.json", false, true);
             var configuration = builder.Build();
-
-            // return configuration["SiteSettings:reqStr"];
-            return null;
         }
     }
 }

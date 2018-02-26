@@ -2,33 +2,47 @@
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using Sender.Controller;
+using Sender.Service;
 using System;
+using System.Collections;
 using System.Text;
 
 namespace Sender
 {
+
+    //Doc: https://dotnetcodr.com/messaging/
     class Send
     {
         public static void Main()
-        {          
-            //SOme changes added
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
+        {
+            CommonService commonService = new CommonService();
+            IConnection connection = commonService.GetRabbitMqConnection();
+            IModel model = connection.CreateModel();
+            SetupSerialisationMessageQueue(model);
+            RunSerialisation(model);
+        }
+
+        private static void SetupSerialisationMessageQueue(IModel model)
+        {
+            model.QueueDeclare(CommonService.SerialisationQueueName, true, false, false, null);
+        }
+
+        private static void RunSerialisation(IModel model)
+        {  
+            RestAPI r = new RestAPI();
+            String jsonified = null;
+            byte[] userBuffer = null;
+            IBasicProperties basicProperties = model.CreateBasicProperties();
+            basicProperties.SetPersistent(true);
+
+            foreach (var item in r.Get())
             {
-                channel.QueueDeclare(queue: "hello", durable: false, exclusive: false, autoDelete: false, arguments: null);
-
-                RestAPI r = new RestAPI();
-                var message = JsonConvert.SerializeObject(r.Get());
-                var body = Encoding.UTF8.GetBytes(message);
-
-                channel.BasicPublish(exchange: "", routingKey: "hello", basicProperties: null, body: body);
-                Console.WriteLine(" [x] Sent {0}", message);
-                Console.ReadLine();
+                jsonified = JsonConvert.SerializeObject(item);
+                userBuffer = Encoding.UTF8.GetBytes(jsonified);
+                model.BasicPublish("", CommonService.SerialisationQueueName, basicProperties, userBuffer);
             }
+          
 
-            Console.WriteLine(" Press [enter] to exit.");
-            Console.ReadLine();
         }
 
         public static string Startup() //Utiliar la interfaz IHostingEnvironment pasada como parámetro E.j. public string Startup(IHostingEnvironment)
