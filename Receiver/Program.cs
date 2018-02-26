@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Receiver.Model;
@@ -36,7 +37,8 @@ namespace Receiver
                 BasicDeliverEventArgs deliveryArguments = consumer.Queue.Dequeue() as BasicDeliverEventArgs;
                 String jsonified = Encoding.UTF8.GetString(deliveryArguments.Body);
                 User u = JsonConvert.DeserializeObject<User>(jsonified);
-                Console.WriteLine(jsonified);
+                string jsonFormatted = JValue.Parse(jsonified).ToString(Formatting.Indented);
+                Console.WriteLine(jsonFormatted);
                 model.BasicAck(deliveryArguments.DeliveryTag, false);
             }
         }
