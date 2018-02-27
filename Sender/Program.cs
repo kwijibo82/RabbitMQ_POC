@@ -41,8 +41,6 @@ namespace Sender
                 userBuffer = Encoding.UTF8.GetBytes(jsonified);
                 model.BasicPublish("", CommonService.SerialisationQueueName, basicProperties, userBuffer);
             }
-          
-
         }
 
         public static string Startup() //Utiliar la interfaz IHostingEnvironment pasada como parámetro E.j. public string Startup(IHostingEnvironment)
