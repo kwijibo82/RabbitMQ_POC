@@ -5,19 +5,23 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Receiver.Model;
 using Receiver.Service;
+using Sender;
 using System;
 using System.Text;
 using static Receiver.Model.User;
 
 namespace Receiver
 {
+    //DOC: Pattern to acces a database: https://stackoverflow.com/questions/29350741/whats-the-best-approach-design-pattern-to-access-database-in-c
     class Receive
     {
+        public static Text t = new Text();
+
         public static void Main()
         {
-            highlightText("red");
-            Console.Write("RECEIVER\n");
-            unHighlightText();
+            t.highlightText("red");
+            t.write("RECEIVER\n");
+            t.unHighlightText();
             CommonService commonService = new CommonService();
             IConnection connection = commonService.GetRabbitMqConnection();
             IModel model = connection.CreateModel();
@@ -34,11 +38,11 @@ namespace Receiver
                 BasicDeliverEventArgs deliveryArguments = consumer.Queue.Dequeue() as BasicDeliverEventArgs;
                 String jsonified = Encoding.UTF8.GetString(deliveryArguments.Body);
                 RootObject r = JsonConvert.DeserializeObject<RootObject>(jsonified); //Store this data using Dapper
-                highlightText("blue");
-                Console.WriteLine(r.name);
-                unHighlightText();
+                t.highlightText("blue");
+                t.write(r.name);
+                t.unHighlightText();
                 string jsonFormatted = JValue.Parse(jsonified).ToString(Formatting.Indented);
-                Console.WriteLine(jsonFormatted);
+                t.write(jsonFormatted);
                 model.BasicAck(deliveryArguments.DeliveryTag, false);
             }
         }
@@ -50,31 +54,6 @@ namespace Receiver
             builder.AddJsonFile("appsettings.json", false, true);
             var configuration = builder.Build();
         }
-
-        public static void highlightText(string color)
-        {
-            if (color.Equals("red"))
-            {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else if (color.Equals("blue"))
-            {
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else if (color.Equals("green"))
-            {
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            //TODO: Add more colors
-            
-        }
-
-        public static void unHighlightText()
-        {
-            Console.ResetColor();
-        }
+    
     }
 }
