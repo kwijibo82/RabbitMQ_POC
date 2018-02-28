@@ -3,13 +3,13 @@ using Receiver.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Receiver.Model.User;
 
 namespace Receiver.Repository
 {
     public class UserRepositorySql : IUserRepository
     {
-        //TODO: Develop with Dapper
-        public void AddUser(User.RootObject rootObject)
+        public void AddUser(RootObject rootObject)
         {
             throw new NotImplementedException();
         }
