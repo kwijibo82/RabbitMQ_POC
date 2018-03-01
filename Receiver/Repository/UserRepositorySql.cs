@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using Receiver.Model;
 using Receiver.Repository.Interfaces;
 using Receiver.Service;
@@ -18,28 +19,13 @@ namespace Receiver.Repository
             {
                 try
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("INSERT INTO [dbo].[User]");
-                    sb.Append(" (id, name, username, email, phone, website) ");
-                    sb.Append("VALUES (");
-                    sb.Append("@Id, ");
-                    sb.Append("@Name, ");
-                    sb.Append("@Username, ");
-                    sb.Append("@Email, ");
-                    sb.Append("@Phone, ");
-                    sb.Append("@Website)");
 
-                    string sql = sb.ToString();
+                    var identity = conn.Insert(
 
-                    conn.Execute(sql, new
-                    {
-                        Id = r.id.ToString().Trim(),
-                        Name = r.name.Trim(),
-                        Username = r.username.Trim(),
-                        Email = r.username.Trim(),
-                        Phone = r.phone.Trim(),
-                        Website = r.website.Trim()
-                    });
+                        new RootObject { id = r.id, name = r.name, username = r.username, email = r.email, phone = r.phone, website = r.website }
+
+                        );
+
                 }
                 finally
                 {

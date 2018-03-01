@@ -8,6 +8,7 @@ using Receiver.Repository;
 using Receiver.Service;
 using Sender;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using static Receiver.Model.User;
 
@@ -29,16 +30,24 @@ namespace Receiver
             ReceiveSerialisationMessages(model);
         }
 
+        //TODO: Store rest of data
+        //TODO: Code review and musts
         private static void ReceiveSerialisationMessages(IModel model)
         {
             model.BasicQos(0, 1, false);
             QueueingBasicConsumer consumer = new QueueingBasicConsumer(model);
             model.BasicConsume(CommonService.SerialisationQueueName, false, consumer);
-            while (true)
+
+            uint test = model.MessageCount("SerialisationDemoQueue"); 
+
+            while (test >= 0)
             {
+                test = model.MessageCount("SerialisationDemoQueue");
                 BasicDeliverEventArgs deliveryArguments = consumer.Queue.Dequeue() as BasicDeliverEventArgs;
                 String jsonified = Encoding.UTF8.GetString(deliveryArguments.Body);
-                RootObject r = JsonConvert.DeserializeObject<RootObject>(jsonified); //Store this data using Dapper
+                RootObject r = JsonConvert.DeserializeObject<RootObject>(jsonified); 
+                var rootObjectList = new List<RootObject>();
+                rootObjectList.Add(r);
                 t.highlightText("blue");
                 t.write(r.name);
                 UserRepositorySql repo = new UserRepositorySql();

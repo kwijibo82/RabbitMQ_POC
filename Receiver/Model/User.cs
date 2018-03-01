@@ -1,10 +1,14 @@
 ﻿using Sender;
 using System;
 using System.Collections.Generic;
+
 using System.Text;
+using Dapper.Contrib;
+using Dapper.Contrib.Extensions;
 
 namespace Receiver.Model
 {
+    
     public class User : ValueObject
     {
         public class Geo
@@ -29,15 +33,28 @@ namespace Receiver.Model
             public string bs { get; set; }
         }
 
+        /// <summary>
+        /// Mappings for Dapper
+        /// </summary>
+        [Table("[dbo].[User]")]
         public class RootObject
         {
+            [Key]
             public int id { get; set; }
+
             public string name { get; set; }
             public string username { get; set; }
             public string email { get; set; }
+
+            [Write(false)]
+            [Computed]
             public Address address { get; set; }
+
             public string phone { get; set; }
             public string website { get; set; }
+
+            [Write(false)]
+            [Computed]
             public Company company { get; set; }
         }
     }
