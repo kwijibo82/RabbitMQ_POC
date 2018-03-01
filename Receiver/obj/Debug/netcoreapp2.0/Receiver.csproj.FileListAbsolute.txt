@@ -9,3 +9,4 @@ C:\Users\JCHACON\source\repos\RabbitMQ_POC\Receiver\obj\Debug\netcoreapp2.0\Rece
 C:\Users\JCHACON\source\repos\RabbitMQ_POC\Receiver\bin\Debug\netcoreapp2.0\Receiver.pdb
 C:\Users\JCHACON\source\repos\RabbitMQ_POC\Receiver\obj\Debug\netcoreapp2.0\Receiver.dll
 C:\Users\JCHACON\source\repos\RabbitMQ_POC\Receiver\obj\Debug\netcoreapp2.0\Receiver.pdb
+C:\Users\JCHACON\Source\Repos\RabbitMQ_POC\Receiver\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.Configuration.dll

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "2e74d34f426381d94796097ce6858f8bce8e65e6"
+    "signature": "e6a8857a615dc80131d0f78b4d34e78204872abf"
   },
   "compilationOptions": {},
   "targets": {
@@ -14,6 +14,7 @@
           "Microsoft.Extensions.Configuration.Binder": "2.0.0",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "2.0.0",
           "Microsoft.Extensions.Configuration.Json": "2.0.0",
+          "NETStandard.Library": "2.0.1",
           "NetFx.Extensions.Configuration.Xml": "2.0.1",
           "Newtonsoft.Json": "11.0.1",
           "RabbitMQ.Client": "5.0.1",
@@ -173,6 +174,7 @@
           "lib/net451/Microsoft.Extensions.Configuration.Xml.dll": {}
         }
       },
+      "NETStandard.Library/2.0.1": {},
       "Newtonsoft.Json/11.0.1": {
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
@@ -180,6 +182,7 @@
       },
       "RabbitMQ.Client/5.0.1": {
         "dependencies": {
+          "NETStandard.Library": "2.0.1",
           "System.Collections.Concurrent": "4.3.0",
           "System.Console": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
@@ -1066,6 +1069,13 @@
       "sha512": "sha512-UfCr8Rs6xENzKZvzylJF7B1tyZ5eWRBJc6OZP/kannCVOCZWWjRkAmISaZQ4wk5cb9hrZrV7kaKsx5ZF89xHyg==",
       "path": "netfx.extensions.configuration.xml/2.0.1",
       "hashPath": "netfx.extensions.configuration.xml.2.0.1.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
+      "path": "netstandard.library/2.0.1",
+      "hashPath": "netstandard.library.2.0.1.nupkg.sha512"
     },
     "Newtonsoft.Json/11.0.1": {
       "type": "package",

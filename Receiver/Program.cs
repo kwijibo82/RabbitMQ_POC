@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Receiver.Model;
+using Receiver.Repository;
 using Receiver.Service;
 using Sender;
 using System;
@@ -40,6 +41,8 @@ namespace Receiver
                 RootObject r = JsonConvert.DeserializeObject<RootObject>(jsonified); //Store this data using Dapper
                 t.highlightText("blue");
                 t.write(r.name);
+                UserRepositorySql repo = new UserRepositorySql();
+                repo.AddUser(r);
                 t.unHighlightText();
                 string jsonFormatted = JValue.Parse(jsonified).ToString(Formatting.Indented);
                 t.write(jsonFormatted);
@@ -47,13 +50,15 @@ namespace Receiver
             }
         }
 
-        public void Startup() 
+        public static string Startup() 
         {
             var builder = new ConfigurationBuilder();
             builder.SetBasePath($"C:\\Users\\JCHACON\\Source\\Repos\\RabbitMQ_POC\\Receiver"); //"des-hardcodear"
             builder.AddJsonFile("appsettings.json", false, true);
             var configuration = builder.Build();
+
+            return configuration["SiteSettings:connectionStr"];
         }
-    
+
     }
 }

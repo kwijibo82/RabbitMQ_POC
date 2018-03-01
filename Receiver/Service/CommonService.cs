@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Receiver.Service
-{
+namespace Receiver.Service { 
+
     public class CommonService
     {
         private string _hostName = "localhost";
