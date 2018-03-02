@@ -36,14 +36,15 @@ namespace Receiver.Model
         /// <summary>
         /// Mappings for Dapper
         /// </summary>
-        [Table("[dbo].[User]")]
+        [Table("[dbo].[Users]")]
         public class RootObject
         {
-            [Key]
+           
             public int id { get; set; }
-
             public string name { get; set; }
             public string username { get; set; }
+
+            [ExplicitKey] //Fix that the [Key] tag will be a null value.
             public string email { get; set; }
 
             [Write(false)]
